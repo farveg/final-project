@@ -35,15 +35,6 @@ switchBoard = switchBoard.lower()
 switchTokens = nltk.word_tokenize(switchBoard)
 
 ttr = len(switchTokens) / len(switchboard.words())
-print(len(switchTokens))
-print(len(switchboard.words()))
-print(ttr)
-
-
-#for speech in speeches:
-#	tokens = nltk.word_tokenize(speech)
-#	ttr = len(tokens) / len(speech)
-#	print(f'This has a TTR of {ttr}.')
 
 for pair in speeches:
 	tokens = nltk.word_tokenize(pair[1])
@@ -51,7 +42,26 @@ for pair in speeches:
 	name = pair[0]
 	print(f'{name} has a TTR of {ttr}')
 
+convos = [x for x in switchboardRaw]
+convos = ''.join(convos)	
+convos = convos.split('\n\n')
 
+conversations = []
+
+for convo in convos:
+	x = re.sub(speakers, '', convo)
+	x = re.sub(descriptions, '', x)
+	x = re.sub(misc, ' ', x)
+	x = re.sub(punctuation, '', x)
+	conversations.append(x)
+
+
+counter=0
+for conversation in conversations:
+	tokens = nltk.word_tokenize(conversation)
+	ttr = len(tokens) / len(conversation)
+	counter +=1
+	print(f'Conversation {counter} has a TTR or {ttr}')
 
 
 
