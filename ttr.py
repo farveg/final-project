@@ -36,11 +36,15 @@ switchTokens = nltk.word_tokenize(switchBoard)
 
 ttr = len(switchTokens) / len(switchboard.words())
 
+proper_noun = re.compile(r'[A-Z]\w+\b')
+number = re.compile(r'[0-9]\w+\b')
+
 for pair in speeches:
 	tokens = nltk.word_tokenize(pair[1])
 	ttr = len(tokens) / len(pair[1])
-	name = pair[0]
-	print(f'{name} has a TTR of {ttr}')
+	name = re.search(proper_noun, pair[0])[0]
+	date = re.search(number, pair[0])[0]
+	print(f"{name}'s {date} Inaugural Address has a TTR of {ttr}")
 
 convos = [x for x in switchboardRaw]
 convos = ''.join(convos)	
@@ -55,13 +59,12 @@ for convo in convos:
 	x = re.sub(punctuation, '', x)
 	conversations.append(x)
 
+counter = 0
 
-counter=0
+word = re.compile(r'\w+\b')
+
 for conversation in conversations:
 	tokens = nltk.word_tokenize(conversation)
 	ttr = len(tokens) / len(conversation)
-	counter +=1
+	counter += 1
 	print(f'Conversation {counter} has a TTR or {ttr}')
-
-
-
