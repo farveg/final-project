@@ -43,15 +43,7 @@ switchBoard = re.sub(descriptions,'', switchBoard)
 switchBoard = re.sub(misc,' ', switchBoard)
 switchBoard = re.sub(punctuation,'', switchBoard)
 
-switchTokens = nltk.word_tokenize(switchBoard.lower())
-
-# How neecessary is any of this section? 'ttr' gives TTR of whole corpus, not desired.
-
-ttr = len(switchTokens) / len(switchboard.words())
-
-print(ttr)
-
-# Creates a list by splitting 'switchboardRaw' at the double newLine break, which separates the string into a list 'convos' containing 36 conversations. A for-loop is passed over that list 'convos' to filter out the same content as previosly and then add each filtered conversation to a new list 'conversations'.
+# Creates a list by splitting 'switchboardRaw' at the double newLine break, which separates the string into a list 'convos' containing 36 conversations. A for-loop is passed over that list 'convos' to filter out the same content as previously and then add each filtered conversation to a new list 'conversations'.
 
 conversations = []
 convos = switchboardRaw.split('\n\n')
@@ -72,4 +64,39 @@ for conversation in conversations:
 	counter += 1
 	print(f'Conversation {counter} has a TTR or {ttr}')
 
+# TF-IDF scores
 
+# The idea is to write a function or set of functions which can compute the TF-IDF score of all the words in each conversation in 'conversations', and then rank-order the results to display the most/least relevant words in each document.
+
+# To do this will require a program which can loop over the values in each element of 'conversations', compute the TF and the IDF scores for each value, multiply these scores together to give the TF-IDF score for each value, and then add that score as a value to a dictionary whose key is the word it corresponds to. There should be 36 dictionaries total, one for each conversation, which can be sorted based on values to display the most and least relevant words in each document.
+
+import math
+
+# For now I've managed to write a function which takes a string as input and prints out the IDF score for that string. I'll need to store that value so that I can further manipulate it, and figure out how to loop over each of the words in each 'conversation' rather than just a manually declared input.
+
+def getIDF(word):
+	counter = 0
+	for conversation in conversations:
+		if re.search(word, conversation):
+			counter+=1
+	if counter > 0:		
+		idf = math.log(len(conversations) / counter)
+	else:
+		idf = 0	
+	print(idf)
+	
+getIDF('understandable')
+
+instructions = """
+	Term Frequency - Inverse Document Frequency
+	TF-IDF = xy, where
+
+	x = The term frequency of a word in a document. There are several ways of calculating this frequency, with the simplest being a raw count of instances a word appears in a document. Then, there are ways to adjust the frequency, by length of a document, or by the raw frequency of the most frequent word in a document.
+
+	y = The inverse document frequency of the word across a set of documents. This means, how common or rare a word is in the entire document set. The closer it is to 0, the more common a word is. This metric can be calculated by taking the total number of documents, dividing it by the number of documents that contain a word, and calculating the logarithm.
+
+= log ( N / count(d in D :t in d)), where 
+t is a word, d a document, D a document set, and N len(D)
+"""
+
+print(instructions)
