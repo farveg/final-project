@@ -72,20 +72,30 @@ for conversation in conversations:
 
 import math
 
-# For now I've managed to write a function which takes a string as input and prints out the IDF score for that string. I'll need to store that value so that I can further manipulate it, and figure out how to loop over each of the words in each 'conversation' rather than just a manually declared input.
+TF_IDF = dict()
+	
+def getTF_IDF(word):
 
-def getIDF(word):
 	counter = 0
 	for conversation in conversations:
 		if re.search(word, conversation):
 			counter+=1
-	if counter > 0:		
-		idf = math.log(len(conversations) / counter)
-	else:
-		idf = 0	
-	print(idf)
-	
-getIDF('understandable')
+		tf = len(re.findall(word, conversation))
+
+		if counter > 0:
+			idf = math.log(len(conversations) / counter)
+		else:
+			idf = 0
+
+		tf_idf = tf * idf
+		TF_IDF[word] = tf_idf
+
+getTF_IDF('was')
+
+print(TF_IDF)
+
+# My getTF_IDF() function gives a value of 0.76 for the word 'was' but 0.0 for the word 'America', which has 7+ matches in the transcript, which means my function isn't working properly. Furthermore, there should be a list containg a separate dictionary for EACH conversation, which contains all the words in that conversation and their TF-IDF scores.
+
 
 instructions = """
 	Term Frequency - Inverse Document Frequency
@@ -100,3 +110,4 @@ t is a word, d a document, D a document set, and N len(D)
 """
 
 print(instructions)
+
