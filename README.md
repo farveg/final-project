@@ -6,7 +6,7 @@ We will be using TTR and word frequency statistics to measure lexical richness.
 #
 IN THIS REPO:
 
-project proposal.pdf
+Who Uses Unique Words.pdf
 
 data-analysis.py
 
